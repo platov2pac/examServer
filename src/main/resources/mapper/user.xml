@@ -1,0 +1,35 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exams.dao.UserDAO">
+    <resultMap id="userResult" type="User">
+        <id property="id" column="id"/>
+        <result property="login" column="login"/>
+        <result property="fullName" column="full_name"/>
+        <result property="password" column="password"/>
+        <collection property="role" ofType="Role" resultMap="roleResult"/>
+        <collection property="faculty" ofType="Faculty" resultMap="facultyResult"/>
+    </resultMap>
+    <resultMap id="facultyResult" type="Faculty">
+        <id property="id" column="faculty_id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+    <resultMap id="roleResult" type="Role">
+        <id property="id" column="role_id"/>
+        <result property="name" column="name"/>
+    </resultMap>
+
+    <select id="getByLogin" resultMap="userResult" resultType="User">
+        select u.id,
+               u.login,
+               u.full_name,
+               u.password,
+               r.id as role_id,
+               r.name,
+               f.id as faculty_id,
+               f.name
+        from users u
+                 left join roles r on u.id_roles = r.id
+                 left join facultys f on u.id_facultys = f.id
+        where u.login = #{login}
+    </select>
+</mapper>
