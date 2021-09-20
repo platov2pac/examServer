@@ -10,5 +10,8 @@ import java.util.List;
 @Mapper
 public interface UserDAO {
     User getByLogin(String login);
+
     List<User> getEnteredUserFromFaculty();
+
+     void addUser(User user);
 }

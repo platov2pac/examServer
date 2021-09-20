@@ -32,4 +32,9 @@
                  left join facultys f on u.id_facultys = f.id
         where u.login = #{login}
     </select>
+
+    <insert id="addUser">
+        insert into users
+        values (default, #{login}, #{fullName}, #{password}, #{faculty.id}, #{role.id})
+    </insert>
 </mapper>
