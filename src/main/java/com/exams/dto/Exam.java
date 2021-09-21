@@ -14,4 +14,5 @@ public class Exam {
     private int idFaculty;
     private Date examDate;
     private String question;
+    private boolean finish;
 }

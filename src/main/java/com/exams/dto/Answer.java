@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class Answer {
     private int id;
     private int idUser;
-    private int idExams;
     private String value;
     private int grade;
-    private boolean status;
+    private boolean answered;
+    private boolean checked;
 }

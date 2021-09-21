@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BadRequestException extends RuntimeException {
-    String message;
+   private String message;
 }

@@ -13,14 +13,14 @@ public class JwtProvide {
     public String generateToken(String login) {
         return Jwts.builder()
                 .setSubject(login)
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(10).toInstant()))
+                .setExpiration(Date.from(ZonedDateTime.now().plusDays(5).toInstant()))
                 .signWith(SignatureAlgorithm.HS512, "goOdSOft")
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey("GoOdSoFt").parseClaimsJws(token);
+            Jwts.parser().setSigningKey("goOdSOft").parseClaimsJws(token);
             return true;
         } catch (UnsupportedJwtException unsEx) {
             log.severe("Unsupported jwt");
@@ -34,7 +34,7 @@ public class JwtProvide {
 
     public boolean expiredToken(String token) {
         try {
-            Jwts.parser().setSigningKey("GoOdSoFt").parseClaimsJws(token);
+            Jwts.parser().setSigningKey("goOdSOft").parseClaimsJws(token);
             return true;
         } catch (ExpiredJwtException expEx) {
             log.severe("Token expired");
@@ -43,7 +43,7 @@ public class JwtProvide {
     }
 
     public String getLoginFromToken(String token) {
-        Claims claims = Jwts.parser().setSigningKey("GoOdSoFt").parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey("goOdSOft").parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
 }

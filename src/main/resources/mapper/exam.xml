@@ -6,6 +6,7 @@
         <result property="idFaculty" column="id_faculty"/>
         <result property="examDate" column="exam_date"/>
         <result property="question" column="question"/>
+        <result property="finish" column="finish"/>
     </resultMap>
 
     <select id="getExamByFacultyId" resultMap="exam" resultType="Exam">
@@ -13,4 +14,10 @@
         from exams e
         where e.id_faculty = #{facultyId}
     </select>
+
+    <update id="setFinish">
+        update exams
+        set finish = true
+        where id_faculty = #{idFaculty}
+    </update>
 </mapper>

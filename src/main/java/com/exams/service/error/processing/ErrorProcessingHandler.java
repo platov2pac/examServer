@@ -14,7 +14,7 @@ public class ErrorProcessingHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     private ResponseEntity<AwesomeException> handleBadRequestException(BadRequestException be) {
         return new ResponseEntity<>(
-                new AwesomeException(be.message),
+                new AwesomeException(be.getMessage()),
                 HttpStatus.BAD_REQUEST);
     }
 

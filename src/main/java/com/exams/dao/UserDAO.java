@@ -14,4 +14,6 @@ public interface UserDAO {
     List<User> getEnteredUserFromFaculty();
 
      void addUser(User user);
+
+     List<User> getAnsweredUsersFromFaculty(int facultyId);
 }

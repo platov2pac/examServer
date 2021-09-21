@@ -11,11 +11,11 @@
     </resultMap>
     <resultMap id="facultyResult" type="Faculty">
         <id property="id" column="faculty_id"/>
-        <result property="name" column="name"/>
+        <result property="name" column="faculty_name"/>
     </resultMap>
     <resultMap id="roleResult" type="Role">
         <id property="id" column="role_id"/>
-        <result property="name" column="name"/>
+        <result property="name" column="role_name"/>
     </resultMap>
 
     <select id="getByLogin" resultMap="userResult" resultType="User">
@@ -23,10 +23,10 @@
                u.login,
                u.full_name,
                u.password,
-               r.id as role_id,
-               r.name,
-               f.id as faculty_id,
-               f.name
+               r.id   as role_id,
+               r.name as role_name,
+               f.id   as faculty_id,
+               f.name as faculty_name
         from users u
                  left join roles r on u.id_roles = r.id
                  left join facultys f on u.id_facultys = f.id
@@ -37,4 +37,22 @@
         insert into users
         values (default, #{login}, #{fullName}, #{password}, #{faculty.id}, #{role.id})
     </insert>
+
+    <select id="getAnsweredUsersFromFaculty" resultType="User" resultMap="userResult">
+        select u.id,
+               u.login,
+               u.full_name,
+               u.password,
+               r.id   as role_id,
+               r.name as role_name,
+               f.id   as faculty_id,
+               f.name as faculty_name
+        from users u
+                 left join roles r on u.id_roles = 3
+                 left join facultys f on u.id_facultys = f.id
+                 left join answers a on u.id = a.id_users
+        where u.id_facultys = #{facultyId}
+          and a.answered = true
+          and a.checked = false
+    </select>
 </mapper>

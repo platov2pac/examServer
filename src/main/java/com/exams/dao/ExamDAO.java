@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface ExamDAO {
     Exam getExamByFacultyId(int facultyId);
+
+    void setFinish(int facultyId);
 }

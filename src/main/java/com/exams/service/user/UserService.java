@@ -15,4 +15,6 @@ public interface UserService {
     List<User> getEnteredUserFromFaculty();
 
     void registerNewUser(User user) throws BadRequestException;
+
+    List<User> getAnsweredUserFromFaculty(String token);
 }

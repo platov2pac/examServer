@@ -1,10 +1,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.exams.dao.AnswerDAO">
-    <update id="setAnswer">
-        update answers a
-        set value    = #{answer},
-            answered = true
-        where id_users = #{id}
+    <resultMap id="resultAnswer" type="Answer">
+        <id property="id" column="id"/>
+        <result property="idUser" column="id_users"/>
+        <result property="value" column="value"/>
+        <result property="grade" column="grade"/>
+        <result property="answered" column="answered"/>
+        <result property="checked" column="checked"/>
+    </resultMap>
+    <insert id="setAnswer">
+        insert into answers
+        values (default, #{id}, #{answer}, default, true);
+    </insert>
+    <select id="getAnswerByUserId" resultType="Answer" resultMap="resultAnswer">
+        select *
+        from answers
+        where id_users = #{userId}
+    </select>
+    <update id="setGrade">
+        update answers
+        set grade   = #{grade},
+            checked = true
+        where id_users = #{userId}
     </update>
 </mapper>

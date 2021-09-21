@@ -7,12 +7,14 @@ import com.exams.service.error.processing.NotFoundException;
 import com.exams.service.user.UserService;
 import com.exams.service.error.processing.BadRequestException;
 import com.exams.web.requests.AuthReq;
+import com.exams.web.requests.ReqWithLogin;
 import com.exams.web.responses.AuthResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -29,7 +31,7 @@ public class UserController {
     private User getUser(@RequestBody String login) {
         User user = userService.getByLogin(login);
         if (user == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Пользователь с таким логином не найден");
         }
         return user;
     }
@@ -39,7 +41,7 @@ public class UserController {
         User user = userService.getByLogin(authReq.getLogin());
         AuthResp authResp = null;
         if (user == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Неверный логин");
         }
         if (passwordEncoder.matches(authReq.getPassword(), user.getPassword())) {
             String token = jwtProvide.generateToken(user.getLogin());
@@ -47,13 +49,16 @@ public class UserController {
 
         }
         if (authResp == null) {
-            throw new NotFoundException();
+            throw new NotFoundException("Неверный пароль");
         }
         return authResp;
     }
 
     @PostMapping("/registration")
     private void registration(@RequestBody User newUser) {
+        if (userService.getByLogin(newUser.getLogin()) != null) {
+            throw new BadRequestException("Пользователь с таким логином уже существует");
+        }
         try {
             userService.registerNewUser(newUser);
         } catch (BadRequestException be) {
@@ -61,4 +66,12 @@ public class UserController {
         }
     }
 
+    @GetMapping("/answeredList")
+    private List<User> getAnsweredUsers(@RequestHeader("Authorization") String token) {
+        try {
+            return userService.getAnsweredUserFromFaculty(token.substring(7));
+        } catch (NotFoundException nfe) {
+            throw new NotFoundException(nfe.getMessage());
+        }
+    }
 }

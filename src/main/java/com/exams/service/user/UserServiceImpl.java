@@ -1,10 +1,12 @@
 package com.exams.service.user;
 
 import com.exams.config.PasswordEncoder;
+import com.exams.config.jwt.JwtProvide;
 import com.exams.dao.ExamDAO;
 import com.exams.dao.UserDAO;
 import com.exams.dto.User;
 import com.exams.service.error.processing.BadRequestException;
+import com.exams.service.error.processing.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtProvide jwtProvide;
 
     @Override
     public User getByLogin(String login) {
@@ -43,5 +48,15 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException();
         }
         userDAOBatis.addUser(user);
+    }
+
+    @Override
+    public List<User> getAnsweredUserFromFaculty(String token) throws NotFoundException {
+        String login = jwtProvide.getLoginFromToken(token);
+        User user = userDAOBatis.getByLogin(login);
+        if (user == null) {
+            throw new NotFoundException("Преподователя нет");
+        }
+        return userDAOBatis.getAnsweredUsersFromFaculty(user.getFaculty().getId());
     }
 }
