@@ -7,10 +7,12 @@ import com.exams.service.error.processing.NotFoundException;
 import com.exams.service.user.UserService;
 import com.exams.service.error.processing.BadRequestException;
 import com.exams.web.requests.AuthReq;
+import com.exams.web.requests.ReqUserId;
 import com.exams.web.requests.ReqWithLogin;
 import com.exams.web.responses.AuthResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -66,7 +68,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/answeredList")
+    @GetMapping("/professor/answeredList")
     private List<User> getAnsweredUsers(@RequestHeader("Authorization") String token) {
         try {
             return userService.getAnsweredUserFromFaculty(token.substring(7));
@@ -82,5 +84,19 @@ public class UserController {
         } catch (NotFoundException nfe) {
             throw new NotFoundException(nfe.getMessage());
         }
+    }
+
+    @PostMapping("/admin/updateUser")
+    public void updateUser(@RequestBody User newUser, @RequestParam String oldLogin) {
+        try {
+            userService.updateUser(newUser, oldLogin);
+        } catch (BadRequestException bre) {
+            throw new BadRequestException(bre.getMessage());
+        }
+    }
+
+    @DeleteMapping("/admin/deleteUser")
+    public void deleteUser(@RequestBody ReqUserId req) {
+        userService.deleteUser(req.getId());
     }
 }

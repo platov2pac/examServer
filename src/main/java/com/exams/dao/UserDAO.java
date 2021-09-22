@@ -13,7 +13,11 @@ public interface UserDAO {
 
     List<User> getCheckedUserFromFaculty(int facultyId);
 
-     void addUser(User user);
+    void addUser(User user);
 
-     List<User> getAnsweredUsersFromFaculty(int facultyId);
+    List<User> getAnsweredUsersFromFaculty(int facultyId);
+
+    void updateUser(User user, String oldLogin);
+
+    void deleteUser(int userId);
 }

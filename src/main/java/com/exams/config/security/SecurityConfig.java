@@ -23,6 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .authorizeRequests()
                 .antMatchers("/getUser").permitAll()
+                .antMatchers("/", "/style/**").permitAll()
+                .antMatchers("/login", "/registration").permitAll()
+                .antMatchers("/professor/*").hasRole("PROFESSOR")
+                .antMatchers("/student/*").hasRole("STUDENT")
+                .antMatchers("/admin/*").hasRole("ADMIN")
                 .anyRequest().permitAll()
                 .and()
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

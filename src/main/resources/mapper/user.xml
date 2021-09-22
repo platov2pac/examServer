@@ -72,4 +72,20 @@
           and a.answered = true
           and a.checked = true
     </select>
+
+    <update id="updateUser">
+        update users u
+        set login      = #{user.login},
+            full_name  = #{user.fullName},
+            password   = #{user.password},
+            id_facultys=${user.faculty.id}
+        where login = #{oldLogin}
+
+    </update>
+
+    <delete id="deleteUser">
+        delete
+        from users u
+        where u.id = #{userId}
+    </delete>
 </mapper>

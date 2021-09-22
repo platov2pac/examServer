@@ -17,4 +17,8 @@ public interface UserService {
     void registerNewUser(User user) throws BadRequestException;
 
     List<User> getAnsweredUserFromFaculty(String token);
+
+    void updateUser(User user, String oldLogin);
+
+    void deleteUser(int userId);
 }

@@ -85,4 +85,23 @@ public class UserServiceImpl implements UserService {
         }
         return userDAOBatis.getAnsweredUsersFromFaculty(user.getFaculty().getId());
     }
+
+    @Override
+    public void updateUser(User user, String oldLogin) {
+        User existUser = userDAOBatis.getByLogin(oldLogin);
+        User repetitiveUser = userDAOBatis.getByLogin(user.getLogin());
+        if (existUser == null) {
+            throw new BadRequestException("Вы пытаетесь обновить не существующего пользователя");
+        }
+        if (repetitiveUser != null && !oldLogin.equals(user.getLogin())) {
+            throw new BadRequestException("Логин уже занят");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDAOBatis.updateUser(user, oldLogin);
+    }
+
+    @Override
+    public void deleteUser(int userId) {
+        userDAOBatis.deleteUser(userId);
+    }
 }

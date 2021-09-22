@@ -20,7 +20,7 @@ public class ExamController {
     @Autowired
     private ExamService examService;
 
-    @GetMapping("/getExam")
+    @GetMapping("/student/getExam")
     public Exam getExam(@RequestHeader("Authorization") String token) {
         try {
             return examService.getExamByLogin(token.substring(7));
@@ -29,7 +29,7 @@ public class ExamController {
         }
     }
 
-    @PostMapping("/setAnswer")
+    @PostMapping("/student/setAnswer")
     public void setAnswer(@RequestBody SetAnswerReq req, @RequestHeader("Authorization") String token) {
         try {
             examService.setAnswerByStudent(token.substring(7), req.getAnswer());
@@ -39,7 +39,7 @@ public class ExamController {
 
     }
 
-    @GetMapping("/getAnswer")
+    @GetMapping("/professor/getAnswer")
     public Answer getAnswer(@RequestBody ReqUserId req) {
         try {
             return examService.getAnswerByUserId(req.getId());
@@ -48,7 +48,7 @@ public class ExamController {
         }
     }
 
-    @PostMapping("/setGrade")
+    @PostMapping("/professor/setGrade")
     public void setGrade(@RequestBody ReqGrade req) {
         if (req.getUserId() == 0) {
             throw new BadRequestException("user id не был передан");
@@ -56,7 +56,7 @@ public class ExamController {
         examService.setGrade(req.getUserId(), req.getGrade());
     }
 
-    @PostMapping("/finishExam")
+    @PostMapping("/professor/finishExam")
     public void setFinishExam(@RequestHeader("Authorization") String token) {
         try {
             examService.setFinish(token.substring(7));

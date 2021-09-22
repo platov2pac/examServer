@@ -20,4 +20,10 @@
         set finish = true
         where id_faculty = #{idFaculty}
     </update>
+
+    <select id="examFinish">
+        select *
+        from exams e
+        where e.id_faculty = ${facultyId}
+    </select>
 </mapper>
