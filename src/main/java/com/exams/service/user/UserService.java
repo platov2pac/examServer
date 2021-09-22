@@ -12,7 +12,7 @@ import java.util.List;
 public interface UserService {
     User getByLogin(String login);
 
-    List<User> getEnteredUserFromFaculty();
+    List<User> getEnteredUserFromFaculty(String token);
 
     void registerNewUser(User user) throws BadRequestException;
 

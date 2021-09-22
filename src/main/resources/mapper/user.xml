@@ -55,4 +55,21 @@
           and a.answered = true
           and a.checked = false
     </select>
+    <select id="getCheckedUserFromFaculty" resultType="User" resultMap="userResult">
+        select u.id,
+               u.login,
+               u.full_name,
+               u.password,
+               r.id   as role_id,
+               r.name as role_name,
+               f.id   as faculty_id,
+               f.name as faculty_name
+        from users u
+                 left join roles r on r.id = 3
+                 left join facultys f on f.id = u.id_facultys
+                 left join answers a on u.id = a.id_users
+        where u.id_facultys = #{facultyId}
+          and a.answered = true
+          and a.checked = true
+    </select>
 </mapper>

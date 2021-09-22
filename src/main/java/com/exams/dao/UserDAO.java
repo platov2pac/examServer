@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserDAO {
     User getByLogin(String login);
 
-    List<User> getEnteredUserFromFaculty();
+    List<User> getCheckedUserFromFaculty(int facultyId);
 
      void addUser(User user);
 

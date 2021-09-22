@@ -74,4 +74,13 @@ public class UserController {
             throw new NotFoundException(nfe.getMessage());
         }
     }
+
+    @GetMapping("/getEnteredUsers")
+    public List<User> getEnteredU(@RequestHeader("Authorization") String token) {
+        try {
+            return userService.getEnteredUserFromFaculty(token);
+        } catch (NotFoundException nfe) {
+            throw new NotFoundException(nfe.getMessage());
+        }
+    }
 }
