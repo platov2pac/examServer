@@ -2,7 +2,9 @@ package com.exams.config.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.extern.java.Log;
+import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -18,10 +20,13 @@ public class JwtProvide {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token) throws ExpiredJwtException {
         try {
             Jwts.parser().setSigningKey("goOdSOft").parseClaimsJws(token);
             return true;
+
+        } catch (ExpiredJwtException expEx) {
+            log.severe("exp jwt");
         } catch (UnsupportedJwtException unsEx) {
             log.severe("Unsupported jwt");
         } catch (MalformedJwtException mjEx) {
