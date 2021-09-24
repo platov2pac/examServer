@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@CrossOrigin("http://localhost:4200/")
 public class ExamController {
     @Autowired
     private ExamService examService;
@@ -40,9 +41,18 @@ public class ExamController {
     }
 
     @GetMapping("/professor/getAnswer")
-    public Answer getAnswer(@RequestBody ReqUserId req) {
+    public Answer getAnswer(@RequestParam Integer id) {
         try {
-            return examService.getAnswerByUserId(req.getId());
+            return examService.getAnswerByUserId(id);
+        } catch (NotFoundException nfe) {
+            throw new NotFoundException(nfe.getMessage());
+        }
+    }
+
+    @GetMapping("/student/getAnswer")
+    public Answer getAnswer(@RequestHeader("Authorization") String token) {
+        try {
+            return examService.getAnswer(token.substring(7));
         } catch (NotFoundException nfe) {
             throw new NotFoundException(nfe.getMessage());
         }

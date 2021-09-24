@@ -65,6 +65,17 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public Answer getAnswer(String token) {
+        String login = jwtProvide.getLoginFromToken(token);
+        User user = userDAO.getByLogin(login);
+        Answer answer = answerDAO.getAnswerByUserId(user.getId());
+        if (answer == null) {
+            throw new NotFoundException("Нет ответа,для выбранного пользователя");
+        }
+        return answer;
+    }
+
+    @Override
     public void setGrade(int id, int grade) {
         answerDAO.setGrade(id, grade);
     }

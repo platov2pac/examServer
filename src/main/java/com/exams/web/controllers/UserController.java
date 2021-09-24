@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
+@CrossOrigin("http://localhost:4200/")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -30,7 +31,7 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/getUser")
-    private User getUser(@RequestBody String login) {
+    private User getUser(@RequestParam String login) {
         User user = userService.getByLogin(login);
         if (user == null) {
             throw new NotFoundException("Пользователь с таким логином не найден");
@@ -38,7 +39,7 @@ public class UserController {
         return user;
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     private AuthResp login(@RequestBody AuthReq authReq) {
         User user = userService.getByLogin(authReq.getLogin());
         AuthResp authResp = null;

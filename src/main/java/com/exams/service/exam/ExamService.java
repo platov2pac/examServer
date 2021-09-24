@@ -10,6 +10,8 @@ public interface ExamService {
 
     Answer getAnswerByUserId(int id);
 
+    Answer getAnswer(String token);
+
     void setGrade(int id, int grade);
 
     void setFinish(String token);

@@ -6,6 +6,7 @@ import com.exams.dao.AnswerDAO;
 import com.exams.dao.ExamDAO;
 import com.exams.dao.UserDAO;
 import com.exams.dto.Answer;
+import com.exams.dto.Exam;
 import com.exams.dto.User;
 import com.exams.service.error.processing.BadRequestException;
 import com.exams.service.error.processing.NotFoundException;
@@ -43,10 +44,11 @@ public class UserServiceImpl implements UserService {
     public List<User> getEnteredUserFromFaculty(String token) {
         String login = jwtProvide.getLoginFromToken(token.substring(7));
         int facultyId = userDAOBatis.getByLogin(login).getFaculty().getId();
+        Exam exam = examDAOBatis.getExamByFacultyId(facultyId);
         List<User> checkedUsers = userDAOBatis.getCheckedUserFromFaculty(facultyId);
         int sumGrades = 0;
         double avGrade = 0.0;
-        if (!checkedUsers.isEmpty()) {
+        if (!checkedUsers.isEmpty() && exam.isFinish()) {
             sumGrades = checkedUsers.stream().map(user ->
                     answerDAO.getAnswerByUserId(user.getId())).mapToInt(Answer::getGrade).sum();
         } else {
