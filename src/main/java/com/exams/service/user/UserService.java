@@ -18,6 +18,8 @@ public interface UserService {
 
     List<User> getAnsweredUserFromFaculty(String token);
 
+    List<User> getNotAnsweredUserFromFaculty(String token);
+
     void updateUser(User user, String oldLogin);
 
     void deleteUser(int userId);

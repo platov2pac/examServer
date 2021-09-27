@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -41,6 +42,10 @@ public class ExamServiceImpl implements ExamService {
         Exam exam = examDAO.getExamByFacultyId(user.getFaculty().getId());
         if (exam == null) {
             throw new NotFoundException("Нет экзамена для выбранного пользовтеля");
+        }
+        Date currentDate = new Date(System.currentTimeMillis());
+        if (exam.getExamDate().after(currentDate)) {
+            throw new BadRequestException("Экзамен еще не начинался");
         }
         return exam;
     }
@@ -77,6 +82,9 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public void setGrade(int id, int grade) {
+        if (grade > 10 || grade < 1) {
+            throw new BadRequestException("Неверный диапазон оценки");
+        }
         answerDAO.setGrade(id, grade);
     }
 

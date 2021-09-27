@@ -37,16 +37,6 @@ public class JwtProvide {
         return false;
     }
 
-    public boolean expiredToken(String token) {
-        try {
-            Jwts.parser().setSigningKey("goOdSOft").parseClaimsJws(token);
-            return true;
-        } catch (ExpiredJwtException expEx) {
-            log.severe("Token expired");
-        }
-        return false;
-    }
-
     public String getLoginFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey("goOdSOft").parseClaimsJws(token).getBody();
         return claims.getSubject();

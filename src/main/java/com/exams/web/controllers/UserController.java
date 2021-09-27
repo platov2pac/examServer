@@ -75,6 +75,17 @@ public class UserController {
             return userService.getAnsweredUserFromFaculty(token.substring(7));
         } catch (NotFoundException nfe) {
             throw new NotFoundException(nfe.getMessage());
+        } catch (BadRequestException bre){
+            throw new BadRequestException(bre.getMessage());
+        }
+    }
+
+    @GetMapping("/professor/notAnsweredList")
+    private List<User> getNotAnsweredUsers(@RequestHeader("Authorization") String token) {
+        try {
+            return userService.getNotAnsweredUserFromFaculty(token.substring(7));
+        } catch (NotFoundException nfe) {
+            throw new NotFoundException(nfe.getMessage());
         }
     }
 

@@ -13,20 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RestController
 @CrossOrigin("http://localhost:4200/")
 public class ExamController {
     @Autowired
     private ExamService examService;
 
-    @GetMapping("/student/getExam")
+    @GetMapping("/getExam")
     public Exam getExam(@RequestHeader("Authorization") String token) {
         try {
             return examService.getExamByLogin(token.substring(7));
         } catch (NotFoundException nfe) {
             throw new NotFoundException(nfe.getMessage());
+        } catch (BadRequestException bre) {
+            throw new BadRequestException(bre.getMessage());
         }
     }
 

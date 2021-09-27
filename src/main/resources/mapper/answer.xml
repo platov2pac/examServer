@@ -9,10 +9,17 @@
         <result property="answered" column="answered"/>
         <result property="checked" column="checked"/>
     </resultMap>
-    <insert id="setAnswer">
+
+    <insert id="regAnswer">
         insert into answers
-        values (default, #{id}, #{answer}, default, true);
+        values (default, #{id}, default, default, default);
     </insert>
+    <update id="setAnswer">
+        update answers
+        set value    = #{answer},
+            answered = true
+        where id_users = #{id};
+    </update>
     <select id="getAnswerByUserId" resultType="Answer" resultMap="resultAnswer">
         select *
         from answers

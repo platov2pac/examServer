@@ -76,6 +76,10 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException();
         }
         userDAOBatis.addUser(user);
+        User newUser = userDAOBatis.getByLogin(user.getLogin());
+        if (newUser.getRole().getId() == 3) {
+            answerDAO.regAnswer(newUser.getId());
+        }
     }
 
     @Override
@@ -85,7 +89,22 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new NotFoundException("Преподователя нет");
         }
+        Date examDate = examDAOBatis.getExamByFacultyId(user.getFaculty().getId()).getExamDate();
+        Date currentDate = new Date(System.currentTimeMillis());
+        if (examDate.after(currentDate)) {
+            throw new BadRequestException("Экзамен не начался");
+        }
         return userDAOBatis.getAnsweredUsersFromFaculty(user.getFaculty().getId());
+    }
+
+    @Override
+    public List<User> getNotAnsweredUserFromFaculty(String token) {
+        String login = jwtProvide.getLoginFromToken(token);
+        User user = userDAOBatis.getByLogin(login);
+        if (user == null) {
+            throw new NotFoundException("Пользователя нет");
+        }
+        return userDAOBatis.getNotAnsweredUsersFromFaculty(user.getFaculty().getId());
     }
 
     @Override

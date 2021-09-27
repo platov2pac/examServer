@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface AnswerDAO {
+    void regAnswer(int id);
     void setAnswer(int id, String answer);
 
     Answer getAnswerByUserId(int userId);
