@@ -20,7 +20,11 @@ public interface UserService {
 
     List<User> getNotAnsweredUserFromFaculty(String token);
 
+    List<User> getProfessors();
+
     void updateUser(User user, String oldLogin);
+
+    void addProfessor(User user);
 
     void deleteUser(int userId);
 }

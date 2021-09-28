@@ -51,6 +51,17 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    public List<Exam> getAllExam() {
+        return examDAO.getAllExam();
+    }
+
+    @Override
+    public void updateExam(String question, String examDate, int examId) {
+        examDAO.updateExam(question, examDate, examId);
+    }
+
+
+    @Override
     public void setAnswerByStudent(String token, String answer) throws NotFoundException {
         String login = jwtProvide.getLoginFromToken(token);
         User user = userDAO.getByLogin(login);

@@ -16,7 +16,10 @@ public interface UserDAO {
     void addUser(User user);
 
     List<User> getAnsweredUsersFromFaculty(int facultyId);
+
     List<User> getNotAnsweredUsersFromFaculty(int facultyId);
+
+    List<User> getProfessors();
 
     void updateUser(User user, String oldLogin);
 

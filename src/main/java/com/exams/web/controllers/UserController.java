@@ -75,7 +75,7 @@ public class UserController {
             return userService.getAnsweredUserFromFaculty(token.substring(7));
         } catch (NotFoundException nfe) {
             throw new NotFoundException(nfe.getMessage());
-        } catch (BadRequestException bre){
+        } catch (BadRequestException bre) {
             throw new BadRequestException(bre.getMessage());
         }
     }
@@ -98,10 +98,24 @@ public class UserController {
         }
     }
 
+    @GetMapping("/admin/getProfessors")
+    public List<User> getProfessors() {
+        return userService.getProfessors();
+    }
+
     @PostMapping("/admin/updateUser")
     public void updateUser(@RequestBody User newUser, @RequestParam String oldLogin) {
         try {
             userService.updateUser(newUser, oldLogin);
+        } catch (BadRequestException bre) {
+            throw new BadRequestException(bre.getMessage());
+        }
+    }
+
+    @PostMapping("/admin/addProfessor")
+    public void addProfessor(@RequestBody User newUser) {
+        try {
+            userService.addProfessor(newUser);
         } catch (BadRequestException bre) {
             throw new BadRequestException(bre.getMessage());
         }

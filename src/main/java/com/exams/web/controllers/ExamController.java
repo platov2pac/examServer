@@ -5,13 +5,12 @@ import com.exams.dto.Exam;
 import com.exams.service.error.processing.BadRequestException;
 import com.exams.service.error.processing.NotFoundException;
 import com.exams.service.exam.ExamService;
-import com.exams.web.requests.ReqGrade;
-import com.exams.web.requests.ReqUserId;
-import com.exams.web.requests.ReqWithLogin;
-import com.exams.web.requests.SetAnswerReq;
+import com.exams.web.requests.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.header.Header;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:4200/")
@@ -73,5 +72,15 @@ public class ExamController {
         } catch (BadRequestException bre) {
             throw new BadRequestException(bre.getMessage());
         }
+    }
+
+    @GetMapping("/admin/getExam")
+    public List<Exam> getAllExam() {
+        return examService.getAllExam();
+    }
+
+    @PostMapping("/admin/updateExam")
+    public void updateExam(@RequestBody ReqUpdateEx req) {
+        examService.updateExam(req.getQuestion(), req.getExamDate(), req.getExamId());
     }
 }

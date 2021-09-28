@@ -7,6 +7,7 @@ import com.exams.dao.ExamDAO;
 import com.exams.dao.UserDAO;
 import com.exams.dto.Answer;
 import com.exams.dto.Exam;
+import com.exams.dto.Role;
 import com.exams.dto.User;
 import com.exams.service.error.processing.BadRequestException;
 import com.exams.service.error.processing.NotFoundException;
@@ -108,6 +109,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getProfessors() {
+        return userDAOBatis.getProfessors();
+    }
+
+    @Override
     public void updateUser(User user, String oldLogin) {
         User existUser = userDAOBatis.getByLogin(oldLogin);
         User repetitiveUser = userDAOBatis.getByLogin(user.getLogin());
@@ -117,9 +123,27 @@ public class UserServiceImpl implements UserService {
         if (repetitiveUser != null && !oldLogin.equals(user.getLogin())) {
             throw new BadRequestException("Логин уже занят");
         }
+        if(user.getPassword()==null || user.getPassword().equals("")){
+            throw new BadRequestException("Пароль пуст");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDAOBatis.updateUser(user, oldLogin);
     }
+
+    @Override
+    public void addProfessor(User user) {
+        User repetitiveUser = userDAOBatis.getByLogin(user.getLogin());
+        if (repetitiveUser != null) {
+            throw new BadRequestException("Логин уже занят");
+        }
+        if(user.getPassword()==null || user.getPassword().equals("")){
+            throw new BadRequestException("Пароль пуст");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRole(new Role(2, "ROLE_ADMIN"));
+        userDAOBatis.addUser(user);
+    }
+
 
     @Override
     public void deleteUser(int userId) {

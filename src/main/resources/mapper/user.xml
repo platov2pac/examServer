@@ -92,6 +92,20 @@
           and a.checked = true
     </select>
 
+    <select id="getProfessors" resultMap="userResult" resultType="User">
+        select u.id,
+               u.login,
+               u.full_name,
+               u.password,
+               r.id   as role_id,
+               r.name as role_name,
+               f.id   as faculty_id,
+               f.name as faculty_name
+        from users u
+                 left join roles r on u.id_roles = r.id
+                 left join facultys f on u.id_facultys = f.id
+        where r.id=2
+    </select>
     <update id="updateUser">
         update users u
         set login      = #{user.login},

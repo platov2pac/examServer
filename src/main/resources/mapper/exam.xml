@@ -15,10 +15,22 @@
         where e.id_faculty = #{facultyId}
     </select>
 
+    <select id="getAllExam" resultMap="exam" resultType="Exam">
+        select *
+        from exams;
+    </select>
+
     <update id="setFinish">
         update exams
         set finish = true
         where id_faculty = #{idFaculty}
+    </update>
+
+    <update id="updateExam">
+        update exams
+        set qustion   = #{question},
+            exam_date = #{examDate}
+        where id = #{examId}
     </update>
 
     <select id="examFinish">
